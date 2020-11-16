@@ -13,19 +13,23 @@ class IndexPage extends StatelessWidget {
   final List<BottomNavigationBarItem> bottomTabs = [
     BottomNavigationBarItem(
       icon: Icon(Icons.home),
-      title: Text(KString.homeTitle),//首页
+      // title: Text(KString.homeTitle),//首页
+      label: KString.homeTitle,
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.category),
-      title: Text(KString.categoryTitle),//分类
+      // title: Text(KString.categoryTitle),//分类
+      label: KString.categoryTitle,
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.shopping_cart),
-      title: Text(KString.shoppingCartTitle),//购物车
+      // title: Text(KString.shoppingCartTitle),//购物车
+      label: KString.shoppingCartTitle,
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.person),
-      title: Text(KString.memberTitle),//会员中心
+      // title: Text(KString.memberTitle),//会员中心
+      label: KString.memberTitle,
     ),
   ];
 

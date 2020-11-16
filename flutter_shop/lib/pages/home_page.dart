@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage>
   bool get wantKeepAlive => true;
 
   GlobalKey<RefreshFooterState> _footerKey = GlobalKey<RefreshFooterState>();
+  GlobalKey<RefreshHeaderState> _headerKey = GlobalKey<RefreshHeaderState>();
 
   @override
   void initState() {
@@ -40,25 +41,37 @@ class _HomePageState extends State<HomePage>
     super.build(context);
     return Scaffold(
       backgroundColor: Color.fromRGBO(244, 245, 245, 1.0),
+      //TODO APPBar
       appBar: AppBar(
         title: Text(KString.homeTitle),
       ),
+      //TODO body 从网络获取数据
       body: FutureBuilder(
-        future: request('homePageContext', formData: null),
+        future: request('homePageContext', formData: null),//TODO 请求数据
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var data = json.decode(snapshot.data.toString());
             print(data);
             List<Map> swiperDataList =
-                (data['data']['slides'] as List).cast(); //轮播图
+                (data['data']['slides'] as List).cast(); //TODO 轮播图数据转json
             List<Map> navigatorList =
-                (data['data']['category'] as List).cast(); //分类
+                (data['data']['category'] as List).cast(); //TODO 分类数据
             List<Map> recommendList =
-                (data['data']['recommend'] as List).cast(); //商品推荐
-            List<Map> floor1 = (data['data']['floor1'] as List).cast(); //底部商品推荐
+                (data['data']['recommend'] as List).cast(); //TODO 商品推荐数据
+            List<Map> floor1 = (data['data']['floor1'] as List).cast(); //TODO 底部商品推荐
             Map fp1 = data['data']['floor1Pic']; //广告
-
+            //TODO 刷新widget
             return EasyRefresh(
+              //TODO 下拉刷新
+              refreshHeader: ClassicsHeader(
+                key: _headerKey,
+                bgColor: Colors.white,
+                textColor: KColor.refreshTextColor,
+                moreInfoColor: KColor.refreshTextColor,
+                showMore: true,
+                moreInfo: KString.loading,
+                //加载中...
+              ),
               refreshFooter: ClassicsFooter(
                 key: _footerKey,
                 bgColor: Colors.white,
@@ -202,10 +215,10 @@ class _HomePageState extends State<HomePage>
   }
 }
 
-//首页轮播组件编写
+//TODO 首页轮播组件编写
 class SwiperDiy extends StatelessWidget {
+  //传入参数数据
   final List swiperDataList;
-
   SwiperDiy({Key key, this.swiperDataList}) : super(key: key);
 
   @override
@@ -235,36 +248,19 @@ class SwiperDiy extends StatelessWidget {
   }
 }
 
-//首页分类导航组件
+//TODO 首页分类导航组件
 class TopNavigator extends StatelessWidget {
+
+  //传入的数据数组
   final List navigatorList;
 
   TopNavigator({Key key, this.navigatorList}) : super(key: key);
-
-  Widget _gridViewItemUI(BuildContext context, item, index) {
-    return InkWell(
-      onTap: () {
-        //跳转到分类页面
-        _goCategory(context, index, item['firstCategoryId']);
-      },
-      child: Column(
-        children: <Widget>[
-          Image.network(
-            item['image'],
-            width: ScreenUtil().setWidth(95),
-          ),
-          Text(item['firstCategoryName'])
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     if (navigatorList.length > 10) {
       navigatorList.removeRange(10, navigatorList.length);
     }
-
     var tempIndex = -1;
     return Container(
       color: Colors.white,
@@ -283,8 +279,25 @@ class TopNavigator extends StatelessWidget {
       ),
     );
   }
+    Widget _gridViewItemUI(BuildContext context, item, index) {
+      return InkWell(
+        onTap: () {
+          _goCategory(context, index, item['firstCategoryId']);
+        },
+        child: Column(
+          children: <Widget>[
+            Image.network(
+              item['image'],
+              width: ScreenUtil().setWidth(95),
+            ),
+            Text(item['firstCategoryName'])
+          ],
+        ),
+      );
 
-  //跳转到分类页面
+  }
+
+  //TODO 跳转到分类页面
   void _goCategory(context, int index, String categoryId) async {
     await request('getCategory', formData: null).then((val) {
       var data = json.decode(val.toString());
@@ -299,7 +312,7 @@ class TopNavigator extends StatelessWidget {
   }
 }
 
-//商品推荐
+//TODO 商品推荐
 class RecommendUI extends StatelessWidget {
   final List recommandList;
 
@@ -347,7 +360,7 @@ class RecommendUI extends StatelessWidget {
           }),
     );
   }
-
+  //商品推荐item
   Widget _item(index, context) {
     return InkWell(
       onTap: () {
@@ -387,7 +400,7 @@ class RecommendUI extends StatelessWidget {
   }
 }
 
-//商品推荐中间广告
+//TODO 商品推荐中间广告
 class FloorPic extends StatelessWidget {
   final Map floorPic;
 
@@ -408,7 +421,7 @@ class FloorPic extends StatelessWidget {
   }
 }
 
-//商品推荐下层
+//TODO 商品推荐下层
 class Floor extends StatelessWidget {
   List<Map> floor;
 

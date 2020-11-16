@@ -7,7 +7,9 @@ class Routes {
   static String detailsPage = '/detail';
 
   static void configureRoutes(FluroRouter router) {
+
     router.notFoundHandler = Handler(
+        // ignore: missing_return
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
           print("ROUTE WAS NOT FOUND !!!");
         });

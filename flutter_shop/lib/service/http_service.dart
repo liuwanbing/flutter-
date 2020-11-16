@@ -9,7 +9,7 @@ Future request(url,{formData})async{
     Response response;
     Dio dio = Dio();
 
-    dio.options.contentType = ContentType.parse('application/x-www-form-urlencoded');
+    dio.options.contentType = ContentType.parse('application/x-www-form-urlencoded').toString();
     if(formData == null){
       response = await dio.post(servicePath[url]);
     }else{
